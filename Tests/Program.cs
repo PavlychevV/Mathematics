@@ -3,6 +3,7 @@
 (string Equation, double Result)[] tests =
 {
     ("2+3*4/5-6^2", -31.6),
+    ("-2+3*4/5-6^2", -35.6),
     ("2+3*4/5+(-6)^2", 40.4),
     ("2+3*4/5+(-6)*2", -7.6),
     ("2^3^2", 512),
@@ -20,7 +21,7 @@ var testNum = 0;
 
 if (allTests)
 {
-    for (int i = 0; i < tests.Length; i++)
+    for (int i = testNum; i < tests.Length; i++)
         Test(tests[i], ref testNum);
 
 } else Test(tests[testNum], ref testNum);

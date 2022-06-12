@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using Pavlychev.Mathematics.Operators;
 
 namespace Pavlychev.Mathematics;
@@ -20,6 +21,8 @@ public static class Problem
     {
         equation = equation.Replace("+-", "-");
         equation = equation.Replace("-", "+-");
+        equation = equation.Replace(",", ".");
+
         if (equation[0] == '+') equation = "0" + equation;
 
         int? brPos = null, brEnd = null;
@@ -116,7 +119,11 @@ public static class Problem
             _a = sb.ToString().Substring(aPos, aLength),
             _b = sb.ToString().Substring(bPos, bLength);
 
-        var bop = BinaryOperator.GetBinaryOperator(op, double.Parse(aLength == 0 ? "0" : _a), double.Parse(_b));
+        double
+            a = double.Parse(aLength == 0 ? "0" : _a, NumberStyles.Any, CultureInfo.InvariantCulture),
+            b = double.Parse(_b, NumberStyles.Any, CultureInfo.InvariantCulture);
+
+        var bop = BinaryOperator.GetBinaryOperator(op, a, b);
 
         if (bop == null) throw new Exception();
 
@@ -127,6 +134,7 @@ public static class Problem
 
     private static bool CheckAndSolve(StringBuilder sb, int j, int bEnd, char opChar, string uppedOpChars, ref double pre)
     {
+        sb = sb.Replace(',', '.');
         if (sb[j] != opChar || sb.ToString().ToList().Exists(x => uppedOpChars.ToList().Exists(y => x == y))) return false;
 
         var bop = Parse(sb, j, bEnd, opChar);
